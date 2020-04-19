@@ -45,7 +45,9 @@ utility::string_t query::create(iri subject_type, iri subject, vector<objAcqPred
 		query_text += L" " + make_object(i);
 
 		//FILTER•”•ª
-		if (p.query_filter != nullptr)filter_text += FILTER + p.query_filter(make_object(i)) + L".";
+		for (const auto& f : p.query_filter) {
+			filter_text += FILTER + L"(" + f->get_filter_text(make_object(i)) + L").";
+		}
 		++i;
 	}
 

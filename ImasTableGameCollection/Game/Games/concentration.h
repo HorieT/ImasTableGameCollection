@@ -22,6 +22,10 @@ private:
 	static constexpr double _card_open_animation_time = 0.6;
 	static constexpr double _card_close_animation_time = _card_open_animation_time;
 	static constexpr double _card_check_time = 1.0;
+
+
+	static inline imas::idol::FilteringParams params;
+	pplx::task<std::vector<Idol>> get_all_ldols;
 	
 	Turn game_turn = Turn::OpenFirst;
 	Stopwatch _card_open_animation;
@@ -32,7 +36,14 @@ private:
 	std::vector<IdolCard> _maked_pair_card;
 	int _turn_count = 0;
 public:
-	concentration(const InitData& init) : cardGameSceneBase(init) {
+	concentration(const InitData& init) : cardGameSceneBase(init){
+		using namespace sparql;
+		params.push_back({ imas::ParametarName::Name, objAcqPred::Filters()});
+		params.push_back({ imas::ParametarName::Color, objAcqPred::Filters() });
+		//params.push_back({ imas::ParametarName::Title, objAcqPred::FilterList{(objAcqPred::Filter)(new regexFilter(L"MillionStars"))} });//テスト
+		params.push_back({ _card_num_param, objAcqPred::Filters() });
+		get_all_ldols = imas::idol::get_idol_list(params);
+		
 		//テスト用　4*6
 		_card_open_animation.reset();
 		_card_close_animation.reset();
@@ -157,7 +168,7 @@ public:
 			//山札作成中
 			if (get_all_ldols.is_done()) {
 				try {
-					if (_card_resource.make_bill_resource(all_idols(), _card_num_param, 2, _row * _column / 2)) {
+					if (_card_resource.make_bill_resource(get_all_ldols.get(), _card_num_param, 2, _row * _column / 2)) {
 						for (const auto& card : _card_resource.get_resource()) {
 							_field_bill.push_back(card);
 						}

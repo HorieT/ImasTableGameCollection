@@ -1,26 +1,31 @@
 #pragma once
 
+#include <memory>
 #include <vector>
-#include <any>
-#include <type_traits>
 #include <functional>
-#include <array>
 #include <optional>
-#include <concepts>
-#include <compare>
-#include <regex>
 #include <cpprest/http_client.h>
 #include "iri.h"
+#include "filter.h"
 
 
 namespace sparql {
 	//クエリ作成補助のための目的語取得用述語クラス
 	class objAcqPred {
 	public:
-		objAcqPred(iri predicate, const std::function<std::wstring(const std::wstring&)>& filter = nullptr) : predicate(predicate), query_filter(filter) {}
+		using Filter = std::shared_ptr<filter>;
+		using Filters = std::vector<Filter>;
+		using FilterList = std::initializer_list<Filter>;
+
+		objAcqPred(iri predicate) : predicate(predicate), query_filter() {}
+		objAcqPred(iri predicate, std::shared_ptr<filter> filters) : predicate(predicate), query_filter(std::initializer_list<std::shared_ptr<filter>>{filters}) {}
+		objAcqPred(iri predicate, std::initializer_list<std::shared_ptr<filter>> filters) : predicate(predicate), query_filter(filters) {}
+		objAcqPred(iri predicate, std::vector<std::shared_ptr<filter>> filters) : predicate(predicate), query_filter(filters) {}
+		
 		iri predicate;
+
 		//クエリにFILTERを掛ける
-		const std::function<std::wstring(const std::wstring&)> query_filter;
+		const std::vector<std::shared_ptr<filter>> query_filter;
 	};
 
 

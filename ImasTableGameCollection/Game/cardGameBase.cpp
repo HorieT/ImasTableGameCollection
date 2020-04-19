@@ -39,8 +39,15 @@ s3d::RoundRect cardGameSceneBase::draw_card(Vec2 point, double width, IdolCard i
 	
 	//テキスト
 	const auto& idol_obj = *idol.lock();
-	auto color = idol_obj->get_data<ParametarName::Color>();
-	const auto& glyphs = _font.GAME_CARD.getVerticalGlyphs(Unicode::FromWString(idol_obj->to_wstring(ParametarName::Name)));
+	imas::idolColor color;
+	try {
+		color = idol_obj->get_data<ParametarName::Color>();
+	}
+	catch (web::json::json_exception&) {
+		color = { 0 };
+	}
+
+	const auto& glyphs = _font.GAME_CARD.getVerticalGlyphs(Unicode::FromWString(idol_obj->to_string(ParametarName::Name)));
 	double start_y = point.y - (((glyphs.size() > 5) ? 5 : glyphs.size()) - 0.5) * glyphs.front().yAdvance / 2.0;
 	Vec2 penPos(point.x + ((glyphs.size() > 5) ? (glyphs.front().xAdvance / 2) : 0), start_y);
 	for (int cnt = 0; const auto & glyph : glyphs) {
@@ -62,18 +69,18 @@ s3d::RoundRect cardGameSceneBase::draw_card(Vec2 point, double width, IdolCard i
 		Vec2 draw_point(textureResource::GAME_CARD_SIZE_BASE / 2.0 - _font.GAME_CARD_MARKS_OFFSET,
 			height / 2.0 - _font.GAME_CARD_MARKS_OFFSET);
 		if (draw_num) {
-			String num = (idol_obj->to_int(_card_resource.get_number()) == -1) ? (U"-") : Unicode::FromWString(idol_obj->to_wstring(_card_resource.get_number()));
+			String num = (idol_obj->to_int(_card_resource.get_number()) == -1) ? (U"-") : Unicode::FromWString(idol_obj->to_string(_card_resource.get_number()));
 			_font.GAME_CARD_MARKS(num).drawAt(point - draw_point, Color(0));
 		}
-		if(draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_wstring(_card_resource.get_mark()))).drawAt(point - draw_point, Color(0));
+		if(draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_string(_card_resource.get_mark()))).drawAt(point - draw_point, Color(0));
 		{
 			auto mat_rotate = Mat3x2::Rotate(180_deg, point);
 			const Transformer2D t_marks(mat_rotate, true);
 			if (draw_num) {
-				String num = (idol_obj->to_int(_card_resource.get_number()) == -1) ? (U"-") : Unicode::FromWString(idol_obj->to_wstring(_card_resource.get_number()));
+				String num = (idol_obj->to_int(_card_resource.get_number()) == -1) ? (U"-") : Unicode::FromWString(idol_obj->to_string(_card_resource.get_number()));
 				_font.GAME_CARD_MARKS(num).drawAt(point - draw_point, Color(0));
 			}
-			if (draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_wstring(_card_resource.get_mark()))).drawAt(point - draw_point, Color(0));
+			if (draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_string(_card_resource.get_mark()))).drawAt(point - draw_point, Color(0));
 		}
 	}
 

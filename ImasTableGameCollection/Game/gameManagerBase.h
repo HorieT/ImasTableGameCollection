@@ -10,9 +10,9 @@
 
 template<class T>
 concept GameSceneClass = std::is_base_of_v<gameSceneBase, T> &&
-requires(T t) {
-    T::title();
-    T::rule();
+requires {
+    {T::title()} -> std::same_as<String>;
+    {T::rule()} -> std::same_as<String>;
 };
 
 template<GameSceneClass T>

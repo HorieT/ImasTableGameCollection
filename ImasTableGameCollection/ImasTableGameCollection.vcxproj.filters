@@ -99,9 +99,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IMASPARQL\idol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game\cardGameBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -438,6 +435,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="helpScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMASPARQL\idolParamGlobal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMASPARQL\filter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

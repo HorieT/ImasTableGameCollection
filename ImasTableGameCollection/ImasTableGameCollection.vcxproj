@@ -110,7 +110,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game\cardGameBase.cpp" />
-    <ClCompile Include="IMASPARQL\idol.cpp" />
     <ClCompile Include="IMASPARQL\query.cpp" />
     <ClCompile Include="IMASPARQL\results.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -249,7 +248,9 @@
     <ClInclude Include="Game\Games\concentration.h" />
     <ClInclude Include="Game\Games\Games.h" />
     <ClInclude Include="helpScene.h" />
+    <ClInclude Include="IMASPARQL\filter.h" />
     <ClInclude Include="IMASPARQL\idol.h" />
+    <ClInclude Include="IMASPARQL\idolParamGlobal.h" />
     <ClInclude Include="IMASPARQL\iri.h" />
     <ClInclude Include="IMASPARQL\query.h" />
     <ClInclude Include="IMASPARQL\results.h" />

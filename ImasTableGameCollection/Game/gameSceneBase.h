@@ -23,17 +23,9 @@ protected:
 	bool _is_return_title = false;
 
 
-	//アイドル・ゲーム用
-	const pplx::task<std::vector<Idol>> get_all_ldols;
-	int _players_count;
-
-	inline std::vector<Idol> all_idols() const{
-		return get_all_ldols.get();//終了チェックはしない
-	}
 public:
 	gameSceneBase(const InitData& init) 
 		: IScene(init), 
-		get_all_ldols(imas::idol::get_idol_list()), 
 		_font(fontResource::get_instance()), 
 		_color(colorResource::get_instance()),
 		_texture(textureResource::get_instance()),

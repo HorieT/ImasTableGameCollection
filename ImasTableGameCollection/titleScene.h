@@ -54,5 +54,6 @@ public:
     void draw() const override {
         Scene::SetBackground(_color.TITLE);
         _font.TITLE(TEXT_TITLE).drawAt(Scene::CenterF());
+        _font.APP_VERSION(TEXT_VERSION).draw(0, Scene::Size().y - 30);
     }
 };

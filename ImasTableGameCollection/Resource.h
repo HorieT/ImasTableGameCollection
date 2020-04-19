@@ -6,8 +6,8 @@
 #include <ratio>
 #include <concepts>
 #pragma region 定数テキスト
-#define VERSION U"1.00.00"
-#define TEXT_TITLE U"アイマスアソビ大全"
+#define TEXT_VERSION U"ver1.00.00"
+#define TEXT_TITLE U"IM@Sアソビ大全"
 #define TEXT_ENTER U"決定"
 #define TEXT_RETURN U"戻る"
 #define TEXT_SETTING U"設定"
@@ -37,6 +37,7 @@ public:
 	static constexpr double GAME_CARD_MARKS_OFFSET = 14.0;
 
 	const Font TITLE{ 60 };
+	const Font APP_VERSION{ 20 };
 	const Font SCENE_TITLE{ 40 };
 	const Font HELP_TEXT{ 20 };
 	const Font GAME_TITLE{ 40 };
