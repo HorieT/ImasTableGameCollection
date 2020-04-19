@@ -6,7 +6,7 @@
 #include <ratio>
 #include <concepts>
 #pragma region 定数テキスト
-#define TEXT_VERSION U"ver1.00.00"
+#define TEXT_VERSION U"ver:b1.00.00"
 #define TEXT_TITLE U"IM@Sアソビ大全"
 #define TEXT_ENTER U"決定"
 #define TEXT_RETURN U"戻る"
@@ -17,6 +17,7 @@
 #define TEXT_GAME_START U"ゲームスタート"
 #define TEXT_RULE U"ルール"
 #define TEXT_RULE_SETTING U"ルール設定"
+#define TEXT_CLEAR U"クリア"
 #pragma endregion
 
 
@@ -66,6 +67,8 @@ public:
 	const Color GAME_RULE_OPTION{ 0x66, 0x00, 0x66};
 	const Color GAME_BACKGROUND{ 0x00, 0x66, 0x33};
 	const Color GAME_CARD_BASE{ 0xFF, 0xFF, 0xFF };
+	const Color GAME_CLEAR{ 0xFF, 0x20, 0x20 };
+	const Color GAME_CLEAR_BASE{ 0xFF, 0xFF, 0x66 };
 };
 
 
