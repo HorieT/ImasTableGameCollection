@@ -186,5 +186,10 @@ namespace imas {
 				return false;
 			}
 		}
+
+		static std::wstring get_param_name(ParametarName name) {
+			if (!is_in_range(name))throw std::out_of_range("'name' is out of range.");
+			return idolBase::get_params(name)->get_name();
+		}
 	};
 } 

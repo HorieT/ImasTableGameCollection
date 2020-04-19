@@ -14,7 +14,6 @@ private:
 		CloseCard,
 		EraseCard
 	};
-	static constexpr imas::ParametarName _card_num_param = imas::ParametarName::Age;
 	static constexpr int _row = 4;
 	static constexpr int _column = 6;
 	static constexpr double _card_size = 80.0;
@@ -23,8 +22,15 @@ private:
 	static constexpr double _card_close_animation_time = _card_open_animation_time;
 	static constexpr double _card_check_time = 1.0;
 
+	//ルール
+	static inline imas::ParametarName card_num = imas::ParametarName::Age;
+	static inline Array<String> num_params;
+	static inline Array<imas::ParametarName> num_params_index;
+	static inline Array<bool> title_filter;
+	static inline Array<String> titles;
+	static inline bool is_show_num = true;
 
-	static inline imas::idol::FilteringParams params;
+	imas::idol::FilteringParams params;
 	pplx::task<std::vector<Idol>> get_all_ldols;
 	
 	Turn game_turn = Turn::OpenFirst;
@@ -38,10 +44,16 @@ private:
 public:
 	concentration(const InitData& init) : cardGameSceneBase(init){
 		using namespace sparql;
+		sparql::objAcqPred::Filters filters;
+		for (int i = 0; auto name : imas::Title::literals) {
+			if (!title_filter.at(i))filters.push_back((objAcqPred::Filter)(new regexFilter(name, false)));
+			++i;
+		}
+
 		params.push_back({ imas::ParametarName::Name, objAcqPred::Filters()});
 		params.push_back({ imas::ParametarName::Color, objAcqPred::Filters() });
-		//params.push_back({ imas::ParametarName::Title, objAcqPred::FilterList{(objAcqPred::Filter)(new regexFilter(L"MillionStars"))} });//テスト
-		params.push_back({ _card_num_param, objAcqPred::Filters() });
+		params.push_back({ imas::ParametarName::Title,  filters });
+		params.push_back({ card_num, objAcqPred::Filters() });
 		get_all_ldols = imas::idol::get_idol_list(params);
 		
 		//テスト用　4*6
@@ -67,7 +79,7 @@ public:
 					s3d::RoundRect overlay;
 					//めくられ
 					if (_opened_card.lock() == card.lock() && (game_turn != Turn::CloseCard && game_turn != Turn::EraseCard))
-						overlay = draw_card(Scene::Center() - Vec2(origin_x - (i % _column) * offset_x, origin_y - (i / _column) * offset_y), _card_size, card, true);
+						overlay = draw_card(Scene::Center() - Vec2(origin_x - (i % _column) * offset_x, origin_y - (i / _column) * offset_y), _card_size, card, is_show_num);
 					//めくられてない
 					else if (_opening_card.lock() != card.lock() && _opened_card.lock() != card.lock())
 						overlay = draw_card(Scene::Center() - Vec2(origin_x - (i % _column) * offset_x, origin_y - (i / _column) * offset_y), _card_size);
@@ -100,7 +112,7 @@ public:
 								Scene::Center() - Vec2(origin_x - (i % _column) * offset_x, origin_y - (i / _column) * offset_y),
 								_card_size,
 								card,
-								true);
+								is_show_num);
 
 						//めくりアニメーション用ストップウォッチ
 						if (_card_open_animation.sF() > _card_open_animation_time) {
@@ -168,7 +180,7 @@ public:
 			//山札作成中
 			if (get_all_ldols.is_done()) {
 				try {
-					if (_card_resource.make_bill_resource(get_all_ldols.get(), _card_num_param, 2, _row * _column / 2)) {
+					if (_card_resource.make_bill_resource(get_all_ldols.get(), card_num, 2, _row * _column / 2)) {
 						for (const auto& card : _card_resource.get_resource()) {
 							_field_bill.push_back(card);
 						}
@@ -192,6 +204,43 @@ public:
 		Scene::SetBackground(_color.GAME_BACKGROUND);
 	}
 
+#pragma region コンセプト既定
+
 	static String title() { return U"神経衰弱"; }
 	static String rule() { return U"めくって同じ奴でペアを作る。"; }
+
+	static void rule_setting() {
+		//初期化
+		if (title_filter.size() == 0) {
+			for (size_t i = 0; i < imas::ParametarName_COUNT; ++i) {
+				auto name = static_cast<imas::ParametarName>(i);
+				if (imas::is_arithmetic_parm(name)) {
+					num_params << Unicode::FromWString(imas::idol::get_param_name(name));
+					num_params_index << name;
+				}
+			}
+			for (auto name : imas::Title::literals) {
+				titles << Unicode::FromWString(name);
+				title_filter.push_back(true);
+			}
+		}
+		size_t num_index = 0;
+		for (int i = 0; auto num : num_params_index) {
+			if (num == card_num) {
+				num_index = i;
+				break;
+			}
+			++i;
+		}
+
+		SimpleGUI::CheckBoxAt(is_show_num, U"ナンバーの可視化", Scene::Center() + Vec2(0, -200));
+		if (SimpleGUI::RadioButtonsAt(num_index, num_params, Scene::Center() + Vec2(-200, 0), 200)) {
+			card_num = num_params_index.at(num_index);
+		}
+		for (int i = 0; const auto & title_name : titles) {
+			SimpleGUI::CheckBox(title_filter.at(i), title_name, Scene::Center() + Vec2(150, -150 + i * 45));
+			++i;
+		}
+	}
+#pragma endregion
 };

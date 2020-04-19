@@ -54,12 +54,12 @@ namespace imas {
 			Production315,
 			Production283,
 		};
-		static inline const std::array<std::wstring, 7> literals{
+		static inline const std::array<std::wstring, 8> literals{
 			L"1st Vision",
 			L"765AS",
 			L"1054Pro",
 			L"DearlyStars",
-			L"CinderellaGirls"
+			L"CinderellaGirls",
 			L"MillionStars",
 			L"315ProIdols",
 			L"283Pro"
@@ -409,6 +409,7 @@ namespace imas {
 			std::shared_ptr<idolParamBase>(new idolParam<ParametarName::Gender>(L"性別", sparql::objAcqPred(_gender_iri))),
 			std::shared_ptr<idolParamBase>(new idolParam<ParametarName::Color>(L"イメージカラー", sparql::objAcqPred(_color_iri)))
 		};
+
 
 
 		static std::shared_ptr<idolParamBase> get_params(ParametarName name) {

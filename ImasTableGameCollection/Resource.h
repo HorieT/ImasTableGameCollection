@@ -16,6 +16,7 @@
 #define TEXT_LOADING U"ロード中"
 #define TEXT_GAME_START U"ゲームスタート"
 #define TEXT_RULE U"ルール"
+#define TEXT_RULE_SETTING U"ルール設定"
 #pragma endregion
 
 
@@ -34,7 +35,7 @@ public:
 
 	static constexpr int OUTLINE_DIVISION_TIMES = 12;
 	static constexpr double OUTLINE_WIDTH = 1.0;
-	static constexpr double GAME_CARD_MARKS_OFFSET = 14.0;
+	static constexpr double GAME_CARD_MARKS_OFFSET = 1.5;
 
 	const Font TITLE{ 60 };
 	const Font APP_VERSION{ 20 };
@@ -43,8 +44,8 @@ public:
 	const Font GAME_TITLE{ 40 };
 	const Font GAME_RULE{ 12 };
 	const Font GAME_FRONT_TEXT{ 30 };
-	const Font GAME_CARD{ 24 };
-	const Font GAME_CARD_MARKS{ 20 };
+	const Font GAME_CARD{ 21 };
+	const Font GAME_CARD_MARKS{ 17 };
 };
 
 //色

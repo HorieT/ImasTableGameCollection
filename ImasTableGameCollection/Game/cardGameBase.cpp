@@ -70,17 +70,17 @@ s3d::RoundRect cardGameSceneBase::draw_card(Vec2 point, double width, IdolCard i
 			height / 2.0 - _font.GAME_CARD_MARKS_OFFSET);
 		if (draw_num) {
 			String num = (idol_obj->to_int(_card_resource.get_number()) == -1) ? (U"-") : Unicode::FromWString(idol_obj->to_string(_card_resource.get_number()));
-			_font.GAME_CARD_MARKS(num).drawAt(point - draw_point, Color(0));
+			_font.GAME_CARD_MARKS(num).draw(point - draw_point, Color(0));
 		}
-		if(draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_string(_card_resource.get_mark()))).drawAt(point - draw_point, Color(0));
+		if(draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_string(_card_resource.get_mark()))).draw(point - draw_point, Color(0));
 		{
 			auto mat_rotate = Mat3x2::Rotate(180_deg, point);
 			const Transformer2D t_marks(mat_rotate, true);
 			if (draw_num) {
 				String num = (idol_obj->to_int(_card_resource.get_number()) == -1) ? (U"-") : Unicode::FromWString(idol_obj->to_string(_card_resource.get_number()));
-				_font.GAME_CARD_MARKS(num).drawAt(point - draw_point, Color(0));
+				_font.GAME_CARD_MARKS(num).draw(point - draw_point, Color(0));
 			}
-			if (draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_string(_card_resource.get_mark()))).drawAt(point - draw_point, Color(0));
+			if (draw_mark)_font.GAME_CARD_MARKS(Unicode::FromWString(idol_obj->to_string(_card_resource.get_mark()))).draw(point - draw_point, Color(0));
 		}
 	}
 

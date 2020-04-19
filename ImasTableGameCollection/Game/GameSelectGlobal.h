@@ -16,6 +16,7 @@ enum class GameState {
     Start,
     Rule,
     Game,
+    RuleSetting,
     Result,
 };
 using GameStateManager = SceneManager<GameState, bool>;

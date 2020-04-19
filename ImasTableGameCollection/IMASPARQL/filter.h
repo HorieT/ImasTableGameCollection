@@ -7,13 +7,15 @@
 namespace sparql {
 	class filter {
 	protected:
-		const bool _match;
+		bool _match;
 	
 		std::wstring get_match_flag() const{
-			return (std::wstring)(_match ? L"" : L"! ");
+			return (std::wstring)(_match ? L" " : L"!");
 		}
 	public:
 		filter(bool match) : _match(match){}
+		bool get_match() { return _match; }
+		void set_match(bool m) { _match = m; }
 		virtual std::wstring get_filter_text(std::wstring) const= 0;
 	};
 
@@ -28,7 +30,7 @@ namespace sparql {
 
 
 		virtual std::wstring get_filter_text(std::wstring arg) const override {
-			return get_match_flag() + L"regex(" + arg + L", \"" + _value + L"\")";
+			return get_match_flag() + L"regex(" + arg + L", '" + _value + L"')";
 		}
 	};
 
@@ -64,7 +66,7 @@ namespace sparql {
 		
 			
 		virtual std::wstring get_filter_text(std::wstring arg) const override {
-			return get_match_flag() + L"LANG(" + arg + L") = " + get_literal();
+			return get_match_flag() + L"LANG(" + arg + L")=" + get_literal();
 		}
 	};
 }
